@@ -10,6 +10,7 @@ int theta=0;
 int radius=theta;
 Color col=Color.ORANGE;
 Rectangle [] lines;
+//ok so how do we do this?
 
 public Blackhole() {
 
