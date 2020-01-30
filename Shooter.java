@@ -8,11 +8,16 @@ import Utilities.GDV5;
 @SuppressWarnings("serial")
 public class Shooter extends GDV5{
 Screen screen;
-static final int width=1200;
-static final int height=800;
+static final int width=1230;
+static final int height=850;
+static final int Gamestate1=1,Gamestate2=2,Gamestate3=3; //1 ==start screen, 2==gameplay, 3==endscreen
+static int state=Gamestate1;
+static int level=1;
+static int score=0;
 public Shooter(){
 	super();
-	screen=new Screen();
+    screen=new Screen();
+
 }
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -26,14 +31,14 @@ public Shooter(){
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		screen.update();
+	screen.update();
+	System.out.print(score+"\n");
 	}
 
 	@Override
 	public void draw(Graphics2D win) {
 		// TODO Auto-generated method stub
 	screen.draw(win);
-	
 	}
 
 }

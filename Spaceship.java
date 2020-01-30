@@ -4,78 +4,93 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.event.KeyEvent;
-
-
 import Utilities.GDV5;
+
+
+
 
 @SuppressWarnings("serial")
 public class Spaceship extends Polygon   {
 int [] xps;
 int [] yps;
+int count=0;
 int points;
 int dx=0;
 int dy=0;
 int speed=5;
+double sf;
 Color col=Color.white;
-double sf=0.1;
+Torpedo [] torpedoes;
 Polygon [] boosters;
+Polygon [] burners;
+Healthbar health;
 int [] bxps1;
 int [] byps1;
 int [] bxps2;
 int [] byps2;
-public Spaceship(int [] xps1, int [] yps1, int pts ) {
+int [] burnxps1;
+int [] burnxps2;
+int [] burnyps1;
+int [] burnyps2;
+boolean burn=false;
+boolean shieldactive=false;
+//add health
+public Spaceship(double nsf ) {
 	super();
-	xps=xps1;
-	yps=yps1;
-	points=pts;
-	boosters=new Polygon[2];
-	init();
-	
-	
-}
-public Spaceship() {
-	super();
+	sf=nsf;
 	xps=new int[] {(int)(0*sf),(int)(200*sf),(int)(400*sf),(int)(600*sf),(int)(800*sf),(int)(400*sf)};
 	yps=new int [] {(int)(800*sf)+100,(int)(300*sf)+100,(int)(0*sf)+100,(int)(300*sf)+100,(int)(800*sf)+100,(int)(450*sf)+100};
 	points=6;
+	this.xpoints=xps;
+	this.ypoints=yps;
+	this.npoints=points;
 	boosters=new Polygon[2];
+	torpedoes=new Torpedo[20];
+	burners=new Polygon[2];
 	init();
+	health=new Healthbar(this);
+	this.moveShip(Shooter.width/2-this.getBounds().width/2,Shooter.height/2);
+
+}
+public Spaceship() {
+ this(0.1);
 }
 
 public void init() {
 	boosters[0]=new Polygon();
 	boosters[1]=new Polygon();
-	bxps1=new int[5];
-	byps1=new int[5];
-	bxps2=new int [5];
-	byps2=new int[5];
-	changevals(this.xps,this.yps);
+	burners[0]=new Polygon();
+	burners[1]=new Polygon();
+	bxps1=new int[] {(int)(xps[0]-10*sf),(int)(xps[0]+200*sf),(int)(xps[0]+200*sf),(int)(xps[0]+100*sf),(int)(xps[0])};
+	byps1=new int[] {(int)(yps[0]+50*sf),(int)(yps[0]+50*sf),(int)(yps[0]-400*sf),(int)(yps[0]-500*sf),(int)(yps[0]-400*sf)};
+	bxps2=new int [] {(int)(xps[4]+10*sf),(int)(xps[4]),(int)(xps[4]-100*sf),(int)(xps[4]-200*sf),(int)(xps[4]-200*sf)};
+	byps2=new int[] {(int)(yps[0]+50*sf),(int)(yps[0]-400*sf),(int)(yps[0]-500*sf),(int)(yps[0]-400*sf),(int)(yps[0]+50*sf)};
+	boosters[0].xpoints=this.bxps1;
+	boosters[0].ypoints=this.byps1;
+	boosters[0].npoints=5;
+	boosters[1].xpoints=this.bxps2;
+	boosters[1].ypoints=this.byps2;
+	boosters[1].npoints=5;
+	burnxps1= new int []{bxps1[0],bxps1[3],bxps1[1]};
+	burnxps2= new int [] {bxps2[3],bxps2[2],bxps2[0]};
+	burnyps1= new int [] {byps1[0],byps1[0]+25,byps1[0]};
+	burnyps2= new int [] {byps1[0],byps1[0]+25,byps1[0]};
+	burners[0].xpoints=this.burnxps1;
+	burners[0].ypoints=this.burnyps1;
+	burners[0].npoints=3;
+	burners[1].xpoints=this.burnxps2;
+	burners[1].ypoints=this.burnyps2;
+	burners[1].npoints=3;
+
+	
 }
-public void changevals(int[] ar1x,int[] ar1y) {
-	bxps1[0]= (int)(ar1x[0]-10*sf/*+100*sf*/);
-	bxps1[1]=(int)(ar1x[0]+200*sf);
-	bxps1[2]=(int)(ar1x[0]+200*sf);
-	bxps1[3]=(int)(ar1x[0]+100*sf);
-	bxps1[4]=(int)(ar1x[0]/*+100*sf*/);
-	byps1[0]=(int)(ar1y[0]+50*sf);
-	byps1[1]=(int)(ar1y[0]+50*sf);
-	byps1[2]=(int)(ar1y[0]-400*sf);
-	byps1[3]=(int)(ar1y[0]-500*sf);
-	byps1[4]=(int)(ar1y[0]-400*sf);
-	bxps2[0]=(int)(ar1x[4]+10*sf/*-100*sf*/);
-	bxps2[1]=(int)(ar1x[4]/*-100*sf*/);
-	bxps2[2]=(int)(ar1x[4]-100*sf);
-	bxps2[3]=(int)(ar1x[4]-200*sf);
-	bxps2[4]=(int)(ar1x[4]-200*sf);
-	byps2[0]=(int)(ar1y[0]+50*sf);
-	byps2[1]=(int)(ar1y[0]-400*sf);
-	byps2[2]=(int)(ar1y[0]-500*sf);
-	byps2[3]=(int)(ar1y[0]-400*sf);
-	byps2[4]=(int)(ar1y[0]+50*sf);
-}
-public void update() {
+
+public void update(Mothership m) {
 	dx=0;
 	dy=0;
+	burn=false;
+	//dTheta=0;
+
 	if(GDV5.KeysPressed[KeyEvent.VK_LEFT] && bxps1[0]>0){
 		dx=-speed;
 	}
@@ -89,39 +104,83 @@ public void update() {
 	}
 	if(GDV5.KeysPressed[KeyEvent.VK_UP] && this.yps[2]-(int)(200*sf)>0) {
 		dy=-speed;
+		burn=true;
+		
 	}
 	
+	if(GDV5.KeysTyped[KeyEvent.VK_SPACE]) {//does the logic for torpedo release
 	
-	//updates all x and y values
-	for(int i=0;i<points;i++) {
-		xps[i]+=dx;
-		yps[i]+=dy;
+		for(int i=0;i<torpedoes.length;i++) {
+			if(torpedoes[i]==null && count==0) {
+				torpedoes[i]=new Torpedo((int)(this.getBounds2D().getX()),(int)(this.getBounds2D().getY()));
+			    count+=1;
+			}
+			if(torpedoes[i]==null && count==1) {
+				torpedoes[i]=new Torpedo((int)(this.getBounds2D().getX()+this.getBounds2D().getWidth()),(int)(this.getBounds2D().getY()));
+				count=0;
+				break;
+			}
+		}
+	  GDV5.KeysTyped[KeyEvent.VK_SPACE]=false;
 	}
-	changevals(xps,yps);//changes the booster positions with respect to the position of the spaceship
+  for(int i=0;i<torpedoes.length;i++) {
+	  if(torpedoes[i]!=null) {
+		  torpedoes[i].update();
+		  if(torpedoes[i].outBounds()) torpedoes[i]=null;
+	  }
+  }
+  this.moveShip(this.getBounds().x+dx,this.getBounds().y+dy);
+  health.update(this,m);
+  
+}
 
+public boolean isDead() {
+	return (health.width<=0);
+}
+
+public void moveShip(int x, int y) {//moves the ship-a cleaner method
+	
+	   int k=(x-this.getBounds().x);
+	   int w=(y-this.getBounds().y);
+	   this.translate(k,w);
+	   health.translate(k, w);
+	   for(Polygon p:boosters) {
+		   p.translate(k, w);
+	   }
+	   for(Polygon p:burners) {
+		   p.translate(k,w);
+	   }
+
+	  
 }
 	public void draw(Graphics2D win) {
 		
 	
-
-	boosters[0].xpoints=this.bxps1;
-	boosters[0].ypoints=this.byps1;
-	boosters[0].npoints=5;
-	boosters[1].xpoints=this.bxps2;
-	boosters[1].ypoints=this.byps2;
-	boosters[1].npoints=5;
-	this.xpoints=xps;
-	this.ypoints=yps;
-	this.npoints=points;
 	win.setColor(col);
-	//fills the entire spaceship
+	
 	
 	win.fill(this);
-	win.fillArc(xps[0],yps[2]-(int)(200*sf),xps[4]-xps[0],(int)(475*sf),0,360);//kinda hardcoded it but whatev
+	win.fillArc(xps[0],yps[2]-(int)(200*sf),(int)((xps[4]-xps[0])),(int)(475*sf),0,360);//kinda hardcoded it but whatev
+	win.setColor(Color.black);
+	win.drawArc(xps[0],yps[2]-(int)(200*sf),(int)((xps[4]-xps[0])),(int)(475*sf),0,360);
 	win.setColor(Color.GRAY);
 	win.fill(boosters[0]);
 	win.fill(boosters[1]);
+   
+   for(int i=0;i<torpedoes.length;i++) {
+	 if(torpedoes[i]!=null)  torpedoes[i].draw(win);
+   }
+   win.setColor(Color.magenta);
+  if(burn) {
+for(Polygon p:burners) {
+   win.fill(p);
+   }
 
-	
+  }
+  health.draw(win);
+  if(shieldactive) {
+	  win.setColor(Color.blue);
+	  win.drawArc((int)(this.getBounds().x-20),(int)(this.getBounds().y-45),(int) (this.getBounds().width*1.5), this.getBounds().width*2, 0, 360);
+  }
 }
 }
