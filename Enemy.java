@@ -7,11 +7,11 @@ import java.awt.image.BufferedImage;
 
 @SuppressWarnings("serial")
 public class Enemy extends Rectangle {// mother class
-
 	Color col = Color.red;
 	int dx = 0;
 	int dy = 0;
 	int mag = 10;
+	double theta=0, dTheta=Math.PI/120;//could be put in enemy class
 //	boolean move=true;
 	// image
 	BufferedImage img = null;
@@ -36,16 +36,19 @@ public class Enemy extends Rectangle {// mother class
 	public void update() {
 
     this.translate(dx, dy);
+   
 
 	}
 
 	public void draw(Graphics2D win) {
+	
 		if (img == null) {
 			win.setColor(col);
 			win.fill(this);
 		} else {
 			win.drawImage(img, null, this.x, this.y);
 		}
+		
 
 	}
 

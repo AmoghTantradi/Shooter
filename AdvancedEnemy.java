@@ -7,7 +7,7 @@ import java.awt.geom.AffineTransform;
 @SuppressWarnings("serial")
 public class AdvancedEnemy extends Enemy {
    
-	double theta=0, dTheta=Math.PI/120;//could be put in enemy class
+	
 
      
 	public AdvancedEnemy() {

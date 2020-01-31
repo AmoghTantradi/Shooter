@@ -21,6 +21,7 @@ int speed=5;
 double sf;
 Color col=Color.white;
 Torpedo [] torpedoes;
+Missile [] mim;
 Polygon [] boosters;
 Polygon [] burners;
 Healthbar health;
@@ -46,6 +47,7 @@ public Spaceship(double nsf ) {
 	this.npoints=points;
 	boosters=new Polygon[2];
 	torpedoes=new Torpedo[20];
+	mim=new Missile[2];
 	burners=new Polygon[2];
 	init();
 	health=new Healthbar(this);
@@ -108,8 +110,21 @@ public void update(Mothership m) {
 		
 	}
 	
-	if(GDV5.KeysTyped[KeyEvent.VK_SPACE]) {//does the logic for torpedo release
+	releaseT();
+	releaseGm();
 	
+  this.moveShip(this.getBounds().x+dx,this.getBounds().y+dy);
+  health.update(this,m);
+  
+}
+
+public boolean isDead() {
+	return (health.width<=0);
+}
+
+public void releaseT() {//fires torpedoes
+	if(GDV5.KeysTyped[KeyEvent.VK_SPACE]) {//does the logic for torpedo release
+		
 		for(int i=0;i<torpedoes.length;i++) {
 			if(torpedoes[i]==null && count==0) {
 				torpedoes[i]=new Torpedo((int)(this.getBounds2D().getX()),(int)(this.getBounds2D().getY()));
@@ -123,22 +138,34 @@ public void update(Mothership m) {
 		}
 	  GDV5.KeysTyped[KeyEvent.VK_SPACE]=false;
 	}
-  for(int i=0;i<torpedoes.length;i++) {
-	  if(torpedoes[i]!=null) {
-		  torpedoes[i].update();
-		  if(torpedoes[i].outBounds()) torpedoes[i]=null;
+	 for(int i=0;i<torpedoes.length;i++) {//logic for updating the torpedoes
+		  if(torpedoes[i]!=null) {
+			  torpedoes[i].update();
+			  if(torpedoes[i].outBounds()) torpedoes[i]=null;
+		  }
 	  }
-  }
-  this.moveShip(this.getBounds().x+dx,this.getBounds().y+dy);
-  health.update(this,m);
-  
+	
 }
 
-public boolean isDead() {
-	return (health.width<=0);
+public void releaseGm() {//fires guided missiles
+	 if(GDV5.KeysTyped[KeyEvent.VK_BACK_SPACE]) {//logic for guided missile release
+		  for(int i=0;i<mim.length;i++) {
+		if(mim[i]==null) {
+			mim[i]=new GuidedMissile((int)(this.getBounds().getCenterX()),(int)(this.getBounds().getCenterY()));
+			 break;
+		}
+		  }
+		  GDV5.KeysTyped[KeyEvent.VK_BACK_SPACE]=false;
+	  }
+	 for(int i=0;i<mim.length;i++) { //logic for updating the guided missiles
+		  if(mim[i]!=null) {
+			  mim[i].update();
+			  if(mim[i].outBounds()) mim[i]=null;
+			  else if( mim[i].intersects(this.getBounds())&& mim[i].theta!=0)mim[i]=null;
+		  }
+	  }
 }
-
-public void moveShip(int x, int y) {//moves the ship-a cleaner method
+public void moveShip(int x, int y) {//moves the ship
 	
 	   int k=(x-this.getBounds().x);
 	   int w=(y-this.getBounds().y);
@@ -153,8 +180,15 @@ public void moveShip(int x, int y) {//moves the ship-a cleaner method
 
 	  
 }
+
 	public void draw(Graphics2D win) {
 		
+		for(int i=0;i<torpedoes.length;i++) {
+			 if(torpedoes[i]!=null)  torpedoes[i].draw(win);
+		   }
+		   for(int i=0;i<mim.length;i++) {
+			   if(mim[i]!=null) mim[i].draw(win);
+		   }
 	
 	win.setColor(col);
 	
@@ -167,9 +201,7 @@ public void moveShip(int x, int y) {//moves the ship-a cleaner method
 	win.fill(boosters[0]);
 	win.fill(boosters[1]);
    
-   for(int i=0;i<torpedoes.length;i++) {
-	 if(torpedoes[i]!=null)  torpedoes[i].draw(win);
-   }
+   
    win.setColor(Color.magenta);
   if(burn) {
 for(Polygon p:burners) {

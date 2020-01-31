@@ -10,17 +10,18 @@ public class Torpedo extends Rectangle {
 	static int width=2, height=75;
 	Color col=Color.cyan;
 	int dy=0;
-	public static int speed=-20;
+	int dx=0;
+	public static int speed=20;
 	public Torpedo(int x, int y) {//pass in the centerx of the bounding rectangle and the y coordinate of the bounding rectangle
 		super(x,y,width,height);
-		dy=speed;
+		dy=-speed;
 	}
 	public void setSpeed(int x) {
 		speed=x;
 	}
 	public void update() {//pass in the centerx of the bounding rectangle and the y coordinate of the bounding rectangle
 
-		this.translate(0, dy);
+		this.translate(dx, dy);
 		
 	}
 	public boolean outBounds() {

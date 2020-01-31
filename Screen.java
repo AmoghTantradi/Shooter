@@ -30,8 +30,7 @@ public class Screen {
 		}
 	
 		if(Shooter.state==Shooter.Gamestate2) {
-        //m.update(gplay.torpedoes);
-		m.update(gplay.torpedoes);
+		m.update(gplay.torpedoes,gplay.mim);
         gplay.update(m);
         
         if(gplay.isDead()) {
@@ -78,9 +77,13 @@ public class Screen {
 	public void draw(Graphics2D win) {
 	if(Shooter.state==Shooter.Gamestate1) {
 	    Font font=new Font("TimesNewRoman",Font.BOLD,150);
+	    Font font2=new Font("TimesNewRoman",Font.BOLD,40);
 	    win.setFont(font);
 	    win.setColor(Color.white);
 	    win.drawString("Space Shooter", 60,150);
+	    win.setFont(font2);
+	    win.drawString("Press arrow keys to move the ship and space bar to shoot", 60, 225);
+	    win.drawString("Press Enter to Play!", 60, 275);
 		c.draw(win);
 		display.draw(win);
 	 

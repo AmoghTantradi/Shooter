@@ -32,7 +32,7 @@ public Shooter(){
 	public void update() {
 		// TODO Auto-generated method stub
 	screen.update();
-	System.out.print(score+"\n");
+	//System.out.print(score+"\n");
 	}
 
 	@Override

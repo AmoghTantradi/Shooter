@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+
 @SuppressWarnings("serial")
 public class Healthbar extends Rectangle {
 
@@ -21,6 +22,8 @@ public class Healthbar extends Rectangle {
 			}
 		}
 		}
+		
+	
 	}
    
 	public void draw(Graphics2D win) {

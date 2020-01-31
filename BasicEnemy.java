@@ -7,15 +7,16 @@ import java.util.Random;
 @SuppressWarnings("serial")
 public class BasicEnemy extends Enemy {
      
-	double theta=Math.PI/2;
-	double dTheta=Math.PI/30;
+	//double theta=Math.PI/2;
+	//double dTheta=Math.PI/30;
 	
 	public BasicEnemy() {
 		this.dy=(int)(this.mag*0.25);
 		Random r1=new Random();
 		int newx=r1.nextInt (Shooter.width);
 		this.setLocation(newx,this.height);
-		
+		this.theta=Math.PI/2;
+		this.dTheta=Math.PI/30;
 	}
 	
 	public void update() {
