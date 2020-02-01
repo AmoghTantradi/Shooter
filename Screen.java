@@ -100,6 +100,9 @@ public class Screen {
 	    win.setColor(Color.white);
 	    win.drawString("Level : "+Shooter.level, (int)(Shooter.width*0.75),(int)(Shooter.height*0.75));
 	    win.drawString("Score :"+Shooter.score, (int)(Shooter.width*0.75), (int)(Shooter.height*0.8));
+	 
+	  
+		   
 	}
 	}
 	

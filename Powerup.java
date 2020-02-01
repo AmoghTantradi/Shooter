@@ -16,11 +16,11 @@ public class Powerup extends Rectangle {
 	 super();
 	 rand=new Random();
 	 dy=speed;
-	 System.out.print("Made\n");
+	// System.out.print("Made\n");
  }
 	
  public void generate() {
-	 System.out.print("Generated\n");
+	// System.out.print("Generated\n");
 	 super.x= (int)(rand.nextInt(Shooter.width-100)+50);//I should use a better algorithm
 	 super.y=(int)(Shooter.height*0.10);
 	 super.width=50; 
@@ -32,10 +32,10 @@ public class Powerup extends Rectangle {
 	// System.out.print("updating\n");
 	if(this.intersects(s.getBounds())) {
 		//do something if it is a health powerup, 
-	    if(this.col==Color.green) {
+	    if(this instanceof HealthPack) {
 	    	s.health.width=s.getBounds().width;//s gets a health boost
 	    }
-	    if(this.col==Color.blue) {
+	    if(this instanceof ShieldPack) {
 	    	s.shieldactive=true;
 	    }
 		

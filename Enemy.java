@@ -18,11 +18,14 @@ public class Enemy extends Rectangle {// mother class
 
 	// health
 	boolean isFalling = true;
-
+    int health=1;
 	public Enemy() {
 		super(0, 0, 20, 20);
 	}
-
+    
+	public Enemy(int x, int y) {
+		super(x,y,20,20);
+	}
 	
 
 	public boolean isoffScreen() {
@@ -31,6 +34,9 @@ public class Enemy extends Rectangle {// mother class
 																								// off screen
 	}
 	
+	public void dmg(int num) {
+		health=num;
+	}
 	
 
 	public void update() {
@@ -45,7 +51,8 @@ public class Enemy extends Rectangle {// mother class
 		if (img == null) {
 			win.setColor(col);
 			win.fill(this);
-		} else {
+		}
+		else {
 			win.drawImage(img, null, this.x, this.y);
 		}
 		

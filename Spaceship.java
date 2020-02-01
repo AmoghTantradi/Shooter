@@ -35,7 +35,8 @@ int [] burnyps1;
 int [] burnyps2;
 boolean burn=false;
 boolean shieldactive=false;
-//add health
+
+
 public Spaceship(double nsf ) {
 	super();
 	sf=nsf;
@@ -110,8 +111,24 @@ public void update(Mothership m) {
 		
 	}
 	
+	
+	
 	releaseT();
-	releaseGm();
+    releaseGm();
+	
+	 for(int i=0;i<torpedoes.length;i++) {//logic for updating the torpedoes
+		  if(torpedoes[i]!=null) {
+			  torpedoes[i].update();
+			  if(torpedoes[i].outBounds()) torpedoes[i]=null;
+		  }
+	  }
+	 for(int i=0;i<mim.length;i++) { //logic for updating the guided missiles
+		  if(mim[i]!=null) {
+			  mim[i].update();
+			  if(mim[i].outBounds()) mim[i]=null;
+			  else if( mim[i].intersects(this.getBounds())&& mim[i].theta!=0)mim[i]=null;
+		  }
+	 }
 	
   this.moveShip(this.getBounds().x+dx,this.getBounds().y+dy);
   health.update(this,m);
@@ -138,12 +155,7 @@ public void releaseT() {//fires torpedoes
 		}
 	  GDV5.KeysTyped[KeyEvent.VK_SPACE]=false;
 	}
-	 for(int i=0;i<torpedoes.length;i++) {//logic for updating the torpedoes
-		  if(torpedoes[i]!=null) {
-			  torpedoes[i].update();
-			  if(torpedoes[i].outBounds()) torpedoes[i]=null;
-		  }
-	  }
+	
 	
 }
 

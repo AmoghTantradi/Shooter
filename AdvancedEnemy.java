@@ -13,7 +13,7 @@ public class AdvancedEnemy extends Enemy {
 	public AdvancedEnemy() {
 		this.dy=this.mag;
 		this.col=Color.blue;
-		
+		this.health=10;
 	
 	}
 	

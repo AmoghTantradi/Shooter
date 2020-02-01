@@ -26,7 +26,7 @@ public class GuidedMissile extends Missile {
 			theta+=dTheta;
 		}
 		
-		
+		theta%=360;//keeps the angle small
 		
 		
 		super.update();
