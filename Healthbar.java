@@ -8,17 +8,36 @@ import java.awt.Rectangle;
 @SuppressWarnings("serial")
 public class Healthbar extends Rectangle {
 
-	public Healthbar(Spaceship s) {
-		super(s.getBounds().x,(int)(s.getBounds().y-250*s.sf),s.getBounds().width,(int)(20*s.sf));
+	public Healthbar(int x,int y, int width, int height) {
+	
+	       super(x,y,width,height);
 	}
 	
-	public void update(Spaceship s, Mothership m) {
-		//ship is passed in to see whether the enemy has hit the ship
+	
+	public void update( Mothership m) {
+		
 		for(int i=0;i<m.theHive.length;i++) {
 		if(m.theHive[i]!=null) {
-			if(m.theHive[i].intersects(s.getBounds()) && !s.shieldactive) {
+			if(m.theHive[i].intersects(Screen.gplay.getBounds()) && !Screen.gplay.shieldactive) {
 				this.width-=1;
+				if(m.theHive[i] instanceof BossEnemy) {
+					this.width-=50;
+					m.hasBoss=false;
+				}
 				m.theHive[i]=null;
+			}
+			if(m.theHive[i] instanceof BossEnemy) {
+				for(int j=0;j<m.theHive[i].heat.length;j++) {
+					if(m.theHive[i].heat[j]!=null) {
+						if(m.theHive[i].heat[j].intersects(Screen.gplay.getBounds())) {
+							if(!Screen.gplay.shieldactive) this.width-=5;
+							else Screen.gplay.shieldactive=false;
+							m.theHive[i].heat[j]=null;
+						}
+						
+					}
+				}
+			
 			}
 		}
 		}

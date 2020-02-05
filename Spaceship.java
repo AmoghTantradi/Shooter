@@ -51,8 +51,9 @@ public Spaceship(double nsf ) {
 	mim=new Missile[2];
 	burners=new Polygon[2];
 	init();
-	health=new Healthbar(this);
+	health=new Healthbar(this.getBounds().x,(int)(this.getBounds().y-250*this.sf),this.getBounds().width,(int)(30*this.sf));
 	this.moveShip(Shooter.width/2-this.getBounds().width/2,Shooter.height/2);
+	
 
 }
 public Spaceship() {
@@ -131,7 +132,7 @@ public void update(Mothership m) {
 	 }
 	
   this.moveShip(this.getBounds().x+dx,this.getBounds().y+dy);
-  health.update(this,m);
+  health.update(m);
   
 }
 
@@ -146,13 +147,16 @@ public void releaseT() {//fires torpedoes
 			if(torpedoes[i]==null && count==0) {
 				torpedoes[i]=new Torpedo((int)(this.getBounds2D().getX()),(int)(this.getBounds2D().getY()));
 			    count+=1;
+			 //   Shooter.s.play(0);
 			}
 			if(torpedoes[i]==null && count==1) {
 				torpedoes[i]=new Torpedo((int)(this.getBounds2D().getX()+this.getBounds2D().getWidth()),(int)(this.getBounds2D().getY()));
 				count=0;
+			//	Shooter.s.play(0);
 				break;
 			}
 		}
+		
 	  GDV5.KeysTyped[KeyEvent.VK_SPACE]=false;
 	}
 	

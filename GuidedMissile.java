@@ -12,7 +12,7 @@ public class GuidedMissile extends Missile {
 	
 	public GuidedMissile(int x, int y) {
 		super(x, y);
-		this.col=Color.DARK_GRAY;
+		this.col=Color.ORANGE;
 		// TODO Auto-generated constructor stub
 	}
     
@@ -28,7 +28,8 @@ public class GuidedMissile extends Missile {
 		
 		theta%=360;//keeps the angle small
 		
-		
+		dx=(int)(speed*Math.sin(Math.toRadians(theta)));
+		dy= (int)(-speed*Math.cos(Math.toRadians(theta)));
 		super.update();
 		
 	}

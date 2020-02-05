@@ -28,15 +28,15 @@ public class Powerup extends Rectangle {
  }
  
  
- public void update(Spaceship s) {
+ public void update() {
 	// System.out.print("updating\n");
-	if(this.intersects(s.getBounds())) {
+	if(this.intersects(Screen.gplay.getBounds())) {
 		//do something if it is a health powerup, 
 	    if(this instanceof HealthPack) {
-	    	s.health.width=s.getBounds().width;//s gets a health boost
+	    	Screen.gplay.health.width=Screen.gplay.getBounds().width;//s gets a health boost
 	    }
 	    if(this instanceof ShieldPack) {
-	    	s.shieldactive=true;
+	    	Screen.gplay.shieldactive=true;
 	    }
 		
 		this.translate(0,Shooter.height);//will be set to null

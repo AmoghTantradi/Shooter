@@ -4,11 +4,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-
 import Utilities.GDV5;
+
 //work on resetting 
 public class Screen {
 	static Spaceship gplay;
+	//static SoundDriver s;
+//	String [] sounds;
 	Spaceship display;
 	Cluster c;
 	Mothership m;
@@ -30,11 +32,12 @@ public class Screen {
 		}
 	
 		if(Shooter.state==Shooter.Gamestate2) {
-		m.update(gplay.torpedoes,gplay.mim);
+		m.update();
         gplay.update(m);
         
         if(gplay.isDead()) {
       	  Shooter.state=Shooter.Gamestate1;
+      	  m.hasBoss=false;
       	  restart();
       	  Screen.gplay.health.width=Screen.gplay.getBounds().width;
         }
@@ -42,11 +45,12 @@ public class Screen {
       
         	if(m.theHive[i]!=null) break;
         	if(m.theHive[i]==null && i==m.theHive.length-1) {//if all the ships are destroyed, then restart the thing(respawn the enemies)
+        		
         		restart();
         	}
         }
-         if(p!=null)  p.update(gplay);
-         if(p2!=null) p2.update(gplay);
+         if(p!=null)  p.update();
+         if(p2!=null) p2.update();
          if(p!=null && p.outBounds()) p=null;
          if(p2!=null && p2.outBounds()) p2=null;
 	}

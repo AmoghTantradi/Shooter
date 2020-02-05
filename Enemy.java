@@ -12,6 +12,7 @@ public class Enemy extends Rectangle {// mother class
 	int dy = 0;
 	int mag = 10;
 	double theta=0, dTheta=Math.PI/120;//could be put in enemy class
+	Missile [] heat;
 //	boolean move=true;
 	// image
 	BufferedImage img = null;
@@ -42,6 +43,9 @@ public class Enemy extends Rectangle {// mother class
 	public void update() {
 
     this.translate(dx, dy);
+    
+    
+   // System.out.println(dx + ":" + dy);
    
 
 	}
