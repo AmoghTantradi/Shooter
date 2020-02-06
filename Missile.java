@@ -19,13 +19,11 @@ public class Missile extends Polygon {
 		this.xpoints=arrx;
 		this.ypoints=arry;
 		this.npoints=5;
+		Shooter.s.play(1);
 	}
 	
 	public void update() {
 	//the child class will do the math
-	//System.out.print("Reached here \n");
-	//	if(this instanceof GuidedMissile) this.translate((int)(speed*Math.sin(Math.toRadians(theta))), (int)(-speed*Math.cos(Math.toRadians(theta))));
-	//	else 
 	this.translate(dx, dy);
 	}
 	public boolean outBounds() {

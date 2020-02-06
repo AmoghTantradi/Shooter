@@ -14,31 +14,40 @@ public class HeatseekingMissile extends Missile {
 		this.col=Color.RED;
 		dTheta=2;
 		theta=180;
-		dy=2*speed;
-		
+		dy=2*speed;	
 	}
 	
 	public void update() {
 		
-		requiredtheta=(90+(180/Math.PI)*Math.atan2((Screen.gplay.getBounds().y-this.getBounds().y), (Screen.gplay.getBounds().x-this.getBounds().x)));
+		requiredtheta=(90+(180/Math.PI)*Math.atan2((Screen.gplay.getBounds().getCenterY()-this.getBounds().getCenterY()), (Screen.gplay.getBounds().getCenterX()-this.getBounds().getCenterX())));
 	    requiredtheta+=360;
-		requiredtheta%=360;
-		if(Screen.gplay.getBounds().x!=this.getBounds().x) {
+	    requiredtheta%=360;
+	    	   
+	    if(Screen.gplay.getBounds().x!=this.getBounds().x ) {
 			if(!(theta-requiredtheta<dTheta && theta-requiredtheta>-dTheta)) {
-		        if(requiredtheta>theta)	theta+=dTheta;
-		        else theta-=dTheta;
+				if(requiredtheta<theta) {
+					if(requiredtheta+360-theta<Math.abs(theta-requiredtheta)) {
+						theta+=dTheta;
+					}
+					else theta-=dTheta;
+				}
+				else {
+					if(theta+360-requiredtheta<requiredtheta-theta){
+						theta-=dTheta;
+					}
+					else theta+=dTheta;
+				}
+		       //this chooses the most optimal path: whether to add degrees or to substract them
 			}
 		}
 	
 		
 	   	theta+=360;
 		theta%=360;
-		dx=(int)((2)*speed*Math.sin(Math.toRadians(theta)));
-		dy= (int)(-(2)*speed*Math.cos(Math.toRadians(theta)));
+		dx=(int)((1.5)*speed*Math.sin(Math.toRadians(theta)));
+		dy= (int)(-(1.5)*speed*Math.cos(Math.toRadians(theta)));
 		
 		super.update();
-  //  System.out.println("required angle :"+requiredtheta);
-	//System.out.println("theta :" +theta);
 	}
 	
 	public void draw(Graphics2D win) {

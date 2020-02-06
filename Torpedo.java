@@ -15,6 +15,7 @@ public class Torpedo extends Rectangle {
 	public Torpedo(int x, int y) {//pass in the centerx of the bounding rectangle and the y coordinate of the bounding rectangle
 		super(x,y,width,height);
 		dy=-speed;
+		Shooter.s.play(0);
 	}
 	public void setSpeed(int x) {
 		speed=x;

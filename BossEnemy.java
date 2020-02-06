@@ -12,8 +12,6 @@ public class BossEnemy extends Enemy {
 	
 	boolean release=false;
 	public BossEnemy() {
-	//	this.width=200;
-		//this.height=200;
 		rand=new Random();
 		this.setSize(200, 200);
 		this.setLocation((int)((Math.random()*Shooter.width/2)+this.width),-this.height);
@@ -32,20 +30,16 @@ public class BossEnemy extends Enemy {
 		}
 		
 		if(this.phase==0) {
-			//super.update();
 			dy=1;
-			//System.out.println(this);
 			super.update();
 		}
 		if(this.phase==1) {
 			
 			if(this.x+this.width>=Shooter.width) {
 				dx*=-1;
-				//this.setLocation(this.x-1,this.y);
 			}
 			if(this.x<=0) {
 				dx=2;
-				//this.setLocation(1, this.y);
 			}
 			for(int i=0;i<heat.length;i++) {
 				if(heat[i]==null) {

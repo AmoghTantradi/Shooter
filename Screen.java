@@ -9,8 +9,6 @@ import Utilities.GDV5;
 //work on resetting 
 public class Screen {
 	static Spaceship gplay;
-	//static SoundDriver s;
-//	String [] sounds;
 	Spaceship display;
 	Cluster c;
 	Mothership m;

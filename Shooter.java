@@ -19,8 +19,14 @@ static SoundDriver s;
 public Shooter(){
 	super();
     screen=new Screen();
-    sounds=new String[1];
-    //sounds[0]="LaserSound.wav";
+    sounds=new String[2];
+    sounds[0]="LaserSound.wav";
+    sounds[1]="MissileSound.wav";
+    
+    s = new SoundDriver(sounds, this);
+    
+    
+    
 
 }
 	public static void main(String[] args) {

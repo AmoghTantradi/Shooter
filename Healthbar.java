@@ -10,7 +10,7 @@ public class Healthbar extends Rectangle {
 
 	public Healthbar(int x,int y, int width, int height) {
 	
-	       super(x,y,width,height);
+	       super(x,(y-10),width,(height));
 	}
 	
 	

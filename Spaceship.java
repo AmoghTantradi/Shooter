@@ -147,12 +147,10 @@ public void releaseT() {//fires torpedoes
 			if(torpedoes[i]==null && count==0) {
 				torpedoes[i]=new Torpedo((int)(this.getBounds2D().getX()),(int)(this.getBounds2D().getY()));
 			    count+=1;
-			 //   Shooter.s.play(0);
 			}
 			if(torpedoes[i]==null && count==1) {
 				torpedoes[i]=new Torpedo((int)(this.getBounds2D().getX()+this.getBounds2D().getWidth()),(int)(this.getBounds2D().getY()));
 				count=0;
-			//	Shooter.s.play(0);
 				break;
 			}
 		}
