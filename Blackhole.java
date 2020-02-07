@@ -2,15 +2,12 @@ package Shooter;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.Line2D;
+//doesn't work very well tbh
 
 public class Blackhole {
-int theta=0;
-int radius=theta;
+
 Color col=Color.ORANGE;
-Rectangle [] lines;
-//ok so how do we do this?
+double centerx,centery,radius=50,theta=0,dTheta=5;
 
 public Blackhole() {
 
@@ -18,11 +15,11 @@ public Blackhole() {
 
 public void update() {
 	
-	theta++;
-	radius=theta;
+	theta+=dTheta;
 }
 public void draw(Graphics2D win) {
 	win.setColor(Color.orange);
-	win.rotate(Math.toRadians(theta));
+	win.drawArc(centerx, centery,radius,radius);
+	win.rotate(Math.toRadians(theta),centerx,centery);
 }
 }
