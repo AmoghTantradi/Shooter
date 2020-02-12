@@ -69,13 +69,7 @@ public class Screen {
 
 	public void soundManager() {
 		if (!Shooter.s.isPlaying(3) && !m.hasBoss) { // Background music
-			if (Shooter.state == Shooter.Gamestate2) {
-
-				Shooter.s.play(3);
-			} else {
-				Shooter.s.stop(3);
-			}
-
+			Shooter.s.play(3);
 		}
 		if (m.hasBoss)
 			Shooter.s.stop(3);
@@ -86,7 +80,7 @@ public class Screen {
 	public void restart() {
 		for (int i = 0; i < m.theHive.length; i++) {
 			m.theHive[i] = null;
-
+			m.d[i] = null;
 		}
 		m.num_ships = 0;
 		gplay.shieldactive = false;

@@ -6,10 +6,7 @@ import java.util.Random;
 
 @SuppressWarnings("serial")
 public class BasicEnemy extends Enemy {
-
-	// double theta=Math.PI/2;
-	// double dTheta=Math.PI/30;
-
+	
 	public BasicEnemy() {
 		this.dy = (int) (this.mag * 0.25);
 		Random r1 = new Random();

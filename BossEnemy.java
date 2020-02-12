@@ -15,10 +15,10 @@ public class BossEnemy extends Enemy {
 	public BossEnemy() {
 		rand = new Random();
 		this.setSize(200, 200);
-		this.setLocation((int) ((Math.random() * Shooter.width / 2) + this.width), -this.height);
+		this.setLocation((int) ((Math.random() * Shooter.width / 2) + this.width), -2 * this.height);
 		heat = new Missile[5];
 		this.health = 100;
-		this.dy = (int) (this.mag * 0.25);
+		this.dy = (int) (this.mag * (0.0001));
 		this.col = Color.yellow;
 		Shooter.s.setVolume(5, (float) 6.0206);
 		Shooter.s.play(5);
@@ -63,7 +63,7 @@ public class BossEnemy extends Enemy {
 	}
 
 	public boolean inPosition() {
-		return (this.y + this.height >= (int) (Shooter.height * 0.25));
+		return (this.y + this.height >= (int) (Shooter.height * 0.40));
 	}
 
 	public void draw(Graphics2D win) {

@@ -31,7 +31,7 @@ public class Healthbar extends Rectangle {
 						if (m.theHive[i].heat[j] != null) {
 							if (m.theHive[i].heat[j].intersects(Screen.gplay.getBounds())) {
 								if (!Screen.gplay.shieldactive)
-									this.width -= (int) (25 * Screen.gplay.sf);
+									this.width -= (int) (20 * Screen.gplay.sf);
 								else
 									Screen.gplay.shieldactive = false;
 								m.theHive[i].heat[j] = null;

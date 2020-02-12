@@ -13,11 +13,7 @@ public class Enemy extends Rectangle {// mother class
 	int mag = 10;
 	double theta = 0, dTheta = Math.PI / 120;// could be put in enemy class
 	Missile[] heat;
-//	boolean move=true;
-	// image
 	BufferedImage img = null;
-
-	// health
 	boolean isFalling = true;
 	int health = 1;
 

@@ -40,7 +40,7 @@ public class HeatseekingMissile extends Missile {
 						theta += dTheta;
 				}
 				// this chooses the most optimal path: whether to add degrees or to substract
-				// them
+
 			}
 		}
 

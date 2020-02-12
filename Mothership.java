@@ -8,6 +8,7 @@ import java.util.Random;
 public class Mothership {
 	Random rand;
 	Enemy[] theHive;
+	Debris[] d;
 	int index = 0;
 	int num_ships = 0;// this counts the number of ships created (even the ships set to null)
 	int magsetter = 100;
@@ -16,6 +17,7 @@ public class Mothership {
 	public Mothership() {
 		rand = new Random();
 		theHive = new Enemy[150]; // reduced enemy size
+		d = new Debris[theHive.length];
 	}
 
 	public void update() {
@@ -68,6 +70,19 @@ public class Mothership {
 
 		} // end for loop
 
+		DebrisLogic();
+
+	}
+
+	public void DebrisLogic() {
+		for (int i = 0; i < d.length; i++) {
+			if (d[i] != null) {
+				d[i].update();
+				if (d[i].length == 0) {
+					d[i] = null;
+				}
+			}
+		}
 	}
 
 	public void TorpedoCollision(Torpedo[] t) {
@@ -84,6 +99,7 @@ public class Mothership {
 						else
 							Shooter.score += 10;
 
+						d[i] = new Debris(theHive[i].x, theHive[i].y, theHive[i].col, theHive.length);
 						theHive[i] = null;
 						Shooter.s.play(4);
 					}
@@ -110,6 +126,7 @@ public class Mothership {
 						else
 							Shooter.score += 10;
 
+						d[i] = new Debris(theHive[i].x, theHive[i].y, theHive[i].col, theHive.length);
 						theHive[i] = null;
 						Shooter.s.play(4);
 					}
@@ -128,7 +145,9 @@ public class Mothership {
 			if (theHive[i] != null) {
 				theHive[i].draw(win);
 			}
-
+			if (d[i] != null) {
+				d[i].draw(win);
+			}
 		}
 
 	}

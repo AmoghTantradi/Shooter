@@ -28,6 +28,7 @@ public class Shooter extends GDV5 {
 		sounds[5] = "StarWars.wav";
 		s = new SoundDriver(sounds, this);
 		screen = new Screen();
+
 	}
 
 	public static void main(String[] args) {
