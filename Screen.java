@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import Utilities.GDV5;
 
-//work on resetting 
 public class Screen {
 	static Spaceship gplay;
 	Spaceship display;
@@ -17,7 +16,6 @@ public class Screen {
 
 	public Screen() {
 		gplay = new Spaceship();
-		display = new Spaceship(0.5);
 		c = new Cluster();
 		p = new HealthPack();
 		p2 = new ShieldPack();// generated method is called in the child constructor
@@ -26,19 +24,21 @@ public class Screen {
 	}
 
 	public void update() {
-		if (GDV5.KeysPressed[KeyEvent.VK_ENTER]) {
+		if (GDV5.KeysPressed[KeyEvent.VK_ENTER] && Shooter.state != Shooter.Gamestate2) {
+			Shooter.state = Shooter.Gamestate2;
+		}
+		if (Shooter.state == Shooter.Gamestate4 && GDV5.KeysPressed[KeyEvent.VK_E]) {
+			Shooter.endless = true;
 			Shooter.state = Shooter.Gamestate2;
 		}
 
-		if (Shooter.state == Shooter.Gamestate2) {
+		if (Shooter.state == Shooter.Gamestate2 && !hasWon()) {
 			m.update();
 			gplay.update(m);
 
-			if (gplay.isDead()) {
-				Shooter.state = Shooter.Gamestate1;
-				m.hasBoss = false;
+			if (gplay.isDead()) {// health is only reset to normal after death or after it has won
+
 				restart();
-				Screen.gplay.health.width = Screen.gplay.getBounds().width;
 			}
 
 			for (int i = 0; i < m.theHive.length; i++) {
@@ -61,10 +61,21 @@ public class Screen {
 				p2 = null;
 
 		}
+		if (hasWon() && !gplay.isDead()) {
+
+			restart();
+		}
 
 		c.update(); // draws the stars no matter what
 		soundManager();
 
+	}
+
+	public boolean hasWon() {
+		if (Shooter.endless == false)
+			return (Shooter.level == 2);
+		else
+			return false;
 	}
 
 	public void soundManager() {
@@ -83,37 +94,53 @@ public class Screen {
 			m.d[i] = null;
 		}
 		m.num_ships = 0;
+		m.hasBoss = false;
 		gplay.shieldactive = false;
+		gplay.shieldhealth = 0;
 		for (int i = 0; i < Shooter.sounds.length; i++) {
 			Shooter.s.stop(i);
 		}
 		Shooter.s.play(3);
 		if (Shooter.state == Shooter.Gamestate1)
-			gplay.moveShip(Shooter.width / 2 - gplay.getBounds().width / 2, Shooter.height / 2);
+			gplay.moveShip(Shooter.width / 2 - gplay.getBounds().width / 2, (int) (Shooter.height * 0.65));
 		p = new HealthPack();
 		p2 = new ShieldPack();
 		if (gplay.isDead()) {
+			if (!Shooter.endless)
+				Shooter.state = Shooter.Gamestate3;
+			else
+				Shooter.state = Shooter.Gamestate1;
 			Shooter.level = 0;
 			Shooter.score = 0;
-		} else
-			Shooter.level += 1;
+			Shooter.endless = false;
+			Screen.gplay.health.width = Screen.gplay.getBounds().width;
+		} else {
+			if (!hasWon())
+				Shooter.level += 1;
+			else {
+				Shooter.state = Shooter.Gamestate4;
+				Shooter.level = 1;
+				Shooter.score = 0;
+				Screen.gplay.health.width = Screen.gplay.getBounds().width;
+			}
+		}
 	}
 
 	public void draw(Graphics2D win) {
 		if (Shooter.state == Shooter.Gamestate1) {
 			Font font = new Font("TimesNewRoman", Font.BOLD, 150);
-			Font font2 = new Font("TimesNewRoman", Font.BOLD, 40);
+			Font font2 = new Font("TimesNewRoman", Font.BOLD, 35);
 			win.setFont(font);
 			win.setColor(Color.white);
 			win.drawString("Space Shooter", 60, 150);
 			win.setFont(font2);
-			win.drawString("Press arrow keys to move the ship and space bar to shoot", 60, 225);
-			win.drawString("Press Enter to Play!", 60, 275);
+			win.drawString("Press arrow keys to move the ship and space bar to shoot", 85, 225);
+			win.drawString("Press Enter to Play!", Shooter.width / 2 - 200, 400);
+			win.drawString("Press Backspace to fire Guided Missiles and use WASD to control them", 25,
+					(int) (Shooter.height * 0.8));
 			c.draw(win);
-			display.draw(win);
 
-		}
-		if (Shooter.state == Shooter.Gamestate2) {
+		} else if (Shooter.state == Shooter.Gamestate2) {
 			c.draw(win);
 			gplay.draw(win);
 			m.draw(win);
@@ -125,8 +152,26 @@ public class Screen {
 			win.setFont(font);
 			win.setColor(Color.white);
 			win.drawString("Level : " + Shooter.level, (int) (Shooter.width * 0.75), (int) (Shooter.height * 0.75));
-			win.drawString("Score :" + Shooter.score, (int) (Shooter.width * 0.75), (int) (Shooter.height * 0.8));
+			win.drawString("Score :" + Shooter.score, (int) (Shooter.width * 0.75), (int) (Shooter.height * 0.85));
 
+		} else if (Shooter.state == Shooter.Gamestate3) {
+			c.draw(win);
+			Font font = new Font("TimesNewRoman", Font.BOLD, 200);
+			Font font2 = new Font("TimesNewRoman", Font.BOLD, 35);
+			win.setFont(font);
+			win.drawString("YOU LOSE", 50, 200);
+			win.setFont(font2);
+			win.drawString("Press Enter to play again", 60, (int) (Shooter.height * (0.75)));
+
+		} else {
+			c.draw(win);
+			Font font = new Font("TimesNewRoman", Font.BOLD, 200);
+			Font font2 = new Font("TimesNewRoman", Font.BOLD, 35);
+			win.setFont(font);
+			win.drawString("YOU WON!", 50, 200);
+			win.setFont(font2);
+			win.drawString("Press Enter to play again", 60, (int) (Shooter.height * (0.75)));
+			win.drawString("Press E for Endless Mode", 60, (int) (Shooter.height * 0.85));
 		}
 	}
 

@@ -21,7 +21,7 @@ public class Powerup extends Rectangle {
 
 	public void generate() {
 		// System.out.print("Generated\n");
-		super.x = (int) (rand.nextInt(Shooter.width / 2) + 250);// I should use a better algorithm
+		super.x = (int) ((Math.random() * Shooter.width / 2) + this.width);// I should use a better algorithm
 		super.y = (int) (Shooter.height * 0.10);
 		super.width = 50;
 		super.height = 50;
@@ -36,6 +36,7 @@ public class Powerup extends Rectangle {
 			}
 			if (this instanceof ShieldPack) {
 				Screen.gplay.shieldactive = true;
+				Screen.gplay.shieldhealth = Screen.gplay.getBounds().width;
 			}
 
 			this.translate(0, Shooter.height);// will be set to null

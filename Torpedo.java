@@ -3,6 +3,7 @@ package Shooter;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 
 @SuppressWarnings("serial")
 public class Torpedo extends Rectangle {
@@ -17,6 +18,12 @@ public class Torpedo extends Rectangle {
 		super(x, y, width, height);
 		dy = -speed;
 		Shooter.s.play(0);
+
+	}
+
+	public void setComp(double x, double y) {
+		dx = (int) x;
+		dy = (int) y;
 	}
 
 	public void setSpeed(int x) {
@@ -35,11 +42,11 @@ public class Torpedo extends Rectangle {
 	}
 
 	public void draw(Graphics2D win) {// pass in the bounding rectangle of the polygon
-
+		AffineTransform old = win.getTransform();
 		win.setColor(col);
 		win.fill(this);
 		win.draw(this);
-
+		win.setTransform(old);
 	}
 
 }

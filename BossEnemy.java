@@ -7,17 +7,16 @@ import java.util.Random;
 @SuppressWarnings("serial")
 public class BossEnemy extends Enemy {
 
-	int phase = 0;// 0==moves into position 2==suppression fire, 3==death mode
+	int phase = 0;// 0==moves into position 2==suppression fire
 	Random rand;
 
 	boolean release = false;
 
 	public BossEnemy() {
 		rand = new Random();
-		this.setSize(200, 200);
-		this.setLocation((int) ((Math.random() * Shooter.width / 2) + this.width), -2 * this.height);
+		this.setRect(((Math.random() * Shooter.width / 2) + this.width), (-2 * 200), 200, 200);
 		heat = new Missile[5];
-		this.health = 100;
+		this.health = 700;
 		this.dy = (int) (this.mag * (0.0001));
 		this.col = Color.yellow;
 		Shooter.s.setVolume(5, (float) 6.0206);
@@ -44,9 +43,11 @@ public class BossEnemy extends Enemy {
 			if (this.x <= 0) {
 				dx = 2;
 			}
-			for (int i = 0; i < heat.length; i++) {
+			for (int i = 0; i < Shooter.level % (heat.length + 1); i++) {
 				if (heat[i] == null) {
-					heat[i] = new HeatseekingMissile((int) this.getCenterX(), (int) this.getCenterY());
+					heat[i] = new HeatseekingMissile(
+							(int) (this.x + (this.width / (Shooter.level % (heat.length + 1))) * i),
+							(int) (this.y + this.height));
 				}
 			}
 			for (int i = 0; i < heat.length; i++) {

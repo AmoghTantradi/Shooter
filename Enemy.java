@@ -2,20 +2,21 @@ package Shooter;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 @SuppressWarnings("serial")
-public class Enemy extends Rectangle {// mother class
+public class Enemy extends Rectangle2D.Double {// mother class
 	Color col = Color.red;
-	int dx = 0;
-	int dy = 0;
+	double dx = 0;
+	double dy = 0;
 	int mag = 10;
 	double theta = 0, dTheta = Math.PI / 120;// could be put in enemy class
 	Missile[] heat;
+	Torpedo[] rain;
 	BufferedImage img = null;
 	boolean isFalling = true;
-	int health = 1;
+	int health = 10;
 
 	public Enemy() {
 		super(0, 0, 20, 20);
@@ -32,12 +33,16 @@ public class Enemy extends Rectangle {// mother class
 	}
 
 	public void dmg(int num) {
-		health = num;
+		health -= num;
 	}
 
 	public void update() {
 
-		this.translate(dx, dy);
+		// this.translate(dx, dy);
+		this.x += this.dx;
+		this.y += this.dy;
+
+		this.setRect(x, y, this.width, this.height);
 
 		// System.out.println(dx + ":" + dy);
 
@@ -49,7 +54,7 @@ public class Enemy extends Rectangle {// mother class
 			win.setColor(col);
 			win.fill(this);
 		} else {
-			win.drawImage(img, null, this.x, this.y);
+			win.drawImage(img, null, (int) this.x, (int) this.y);
 		}
 
 	}

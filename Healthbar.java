@@ -3,7 +3,6 @@ package Shooter;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-//NOW DO THE BOOM CRAP
 
 @SuppressWarnings("serial")
 public class Healthbar extends Rectangle {
@@ -17,8 +16,11 @@ public class Healthbar extends Rectangle {
 
 		for (int i = 0; i < m.theHive.length; i++) {
 			if (m.theHive[i] != null) {
-				if (m.theHive[i].intersects(Screen.gplay.getBounds()) && !Screen.gplay.shieldactive) {
-					this.width -= (int) (15 * Screen.gplay.sf);
+				if (m.theHive[i].intersects(Screen.gplay.getBounds())) {
+					if (!Screen.gplay.shieldactive)
+						this.width -= (int) (15 * Screen.gplay.sf);
+					else
+						Screen.gplay.shieldhealth -= (int) (15 * Screen.gplay.sf);
 					if (m.theHive[i] instanceof BossEnemy) {
 						this.width -= 50;
 						m.hasBoss = false;

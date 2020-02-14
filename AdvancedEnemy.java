@@ -7,10 +7,17 @@ import java.awt.geom.AffineTransform;
 @SuppressWarnings("serial")
 public class AdvancedEnemy extends Enemy {
 
+	double dely;
+	double delx;
+	double angle;
+
 	public AdvancedEnemy() {
+		super(Shooter.width / 2, 0);
+		this.dTheta = Math.PI / 450;
 		this.dy = this.mag;
 		this.col = Color.blue;
-		this.health = 10;
+		this.health = 20;
+		this.rain = new Torpedo[20];
 
 	}
 
@@ -18,26 +25,33 @@ public class AdvancedEnemy extends Enemy {
 
 		if (this.isFalling == false) {
 			this.theta += this.dTheta;
-			dx = (int) (16 * Math.sin(this.theta));
-			dy = (int) (11 * Math.cos(this.theta));
+			this.theta %= (2 * Math.PI);// stays small and between 0 and 2pi
+			dy = (9 * Math.cos(theta * 3) * (0.95));// this is the lissajous curve
+			dx = (16 * Math.cos(4 * theta) * (0.95));
+			setAngle();
 
-		} else {
-			if (this.y > 400) {
+		}
+
+		else {
+			if (this.y >= Shooter.height / 2) {
 				this.isFalling = false;
 			}
 		}
-		super.update();
 
+		super.update();
 	}
 
 	public void setMag(int x) {
 		this.mag = x;
 	}
 
+	public void setAngle() {
+		dely = Screen.gplay.getBounds().getCenterY() - this.getCenterY();
+		delx = Screen.gplay.getBounds().getCenterX() - this.getCenterX();
+		angle = Math.atan2(dely, delx);
+	}
+
 	public void draw(Graphics2D win) {
-		double dely = Screen.gplay.getBounds().getCenterY() - this.getCenterY();
-		double delx = Screen.gplay.getBounds().getCenterX() - this.getCenterX();
-		double angle = Math.atan2(dely, delx);
 
 		AffineTransform old = win.getTransform();
 
@@ -46,5 +60,6 @@ public class AdvancedEnemy extends Enemy {
 		super.draw(win);
 
 		win.setTransform(old);
+
 	}
 }

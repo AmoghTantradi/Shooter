@@ -47,13 +47,13 @@ public class Mothership {
 				if (num_ships < theHive.length) {// only starts creating the enemies if all of them are dead or if the
 													// number of ships generate is not equal to the length of the hive
 					if (rand.nextGaussian() > 0.9 && this.hasBoss == false) {
-						if (rand.nextInt(100) > 98) {
+						if (rand.nextInt(10000) > 9945 && Shooter.level != 1) {
 							theHive[i] = new BossEnemy();
 							this.hasBoss = true;
 							num_ships += 1;
 
 						} else {
-							if (Math.abs(rand.nextGaussian()) > 0.35) {
+							if ((rand.nextGaussian()) > 0.35) {
 
 								theHive[i] = new AdvancedEnemy();
 								num_ships += 1;
@@ -89,7 +89,7 @@ public class Mothership {
 		for (int i = 0; i < theHive.length; i++) {
 			for (int j = 0; j < t.length; j++) {// first check torpedoes
 				if (theHive[i] != null && t[j] != null && t[j].intersects(theHive[i])) {
-					theHive[i].dmg(theHive[i].health - 5);
+					theHive[i].dmg(10);
 					if (theHive[i].health <= 0) {
 						if (theHive[i] instanceof BossEnemy) {
 							this.hasBoss = false;
@@ -99,7 +99,7 @@ public class Mothership {
 						else
 							Shooter.score += 10;
 
-						d[i] = new Debris(theHive[i].x, theHive[i].y, theHive[i].col, theHive.length);
+						d[i] = new Debris((int) theHive[i].x, (int) theHive[i].y, theHive[i].col, theHive.length);
 						theHive[i] = null;
 						Shooter.s.play(4);
 					}
@@ -116,7 +116,7 @@ public class Mothership {
 		for (int i = 0; i < theHive.length; i++) {
 			for (int j = 0; j < m.length; j++) {
 				if (theHive[i] != null && m[j] != null && m[j].intersects(theHive[i])) {
-					theHive[i].dmg(theHive[i].health - 20);
+					theHive[i].dmg(30);
 					if (theHive[i].health <= 0) {
 						if (theHive[i] instanceof BossEnemy) {
 							this.hasBoss = false;
@@ -126,7 +126,7 @@ public class Mothership {
 						else
 							Shooter.score += 10;
 
-						d[i] = new Debris(theHive[i].x, theHive[i].y, theHive[i].col, theHive.length);
+						d[i] = new Debris((int) theHive[i].x, (int) theHive[i].y, theHive[i].col, theHive.length);
 						theHive[i] = null;
 						Shooter.s.play(4);
 					}

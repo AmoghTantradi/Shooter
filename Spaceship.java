@@ -32,6 +32,7 @@ public class Spaceship extends Polygon {
 	int[] burnyps2;
 	boolean burn = false;
 	boolean shieldactive = false;
+	int shieldhealth = 0;
 
 	public Spaceship(double nsf) {
 		super();
@@ -51,7 +52,7 @@ public class Spaceship extends Polygon {
 		init();
 		health = new Healthbar(this.getBounds().x, (int) (this.getBounds().y - 250 * this.sf), this.getBounds().width,
 				(int) (30 * this.sf));
-		this.moveShip(Shooter.width / 2 - this.getBounds().width / 2, Shooter.height / 2);
+		this.moveShip(Shooter.width / 2 - this.getBounds().width / 2, (int) (Shooter.height * (0.65)));
 
 	}
 
@@ -116,6 +117,7 @@ public class Spaceship extends Polygon {
 
 		releaseT();
 		releaseGm();
+		shieldManager();
 
 		for (int i = 0; i < torpedoes.length; i++) {// logic for updating the torpedoes
 			if (torpedoes[i] != null) {
@@ -137,6 +139,12 @@ public class Spaceship extends Polygon {
 		this.moveShip(this.getBounds().x + dx, this.getBounds().y + dy);
 		health.update(m);
 
+	}
+
+	public void shieldManager() {
+		if (this.shieldhealth <= 0) {
+			this.shieldactive = false;
+		}
 	}
 
 	public boolean isDead() {

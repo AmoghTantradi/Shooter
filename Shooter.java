@@ -10,12 +10,14 @@ public class Shooter extends GDV5 {
 	Screen screen;
 	static final int width = 1230;
 	static final int height = 850;
-	static final int Gamestate1 = 1, Gamestate2 = 2, Gamestate3 = 3; // 1 ==start screen, 2==gameplay, 3==endscreen
-	static int state = Gamestate1;
+	static final int Gamestate1 = 1, Gamestate2 = 2, Gamestate3 = 3, Gamestate4 = 4; // 1 ==start screen, 2==gameplay,
+																						// 3==endscreen
+	static int state = Gamestate1; // 4=you won! screen
 	static int level = 1;
 	static int score = 0;
 	static String[] sounds;
 	static SoundDriver s;
+	static boolean endless = false;
 
 	public Shooter() {
 		super();

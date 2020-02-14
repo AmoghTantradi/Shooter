@@ -6,12 +6,12 @@ import java.util.Random;
 
 @SuppressWarnings("serial")
 public class BasicEnemy extends Enemy {
-	
+
 	public BasicEnemy() {
 		this.dy = (int) (this.mag * 0.25);
 		Random r1 = new Random();
 		int newx = r1.nextInt(Shooter.width);
-		this.setLocation(newx, this.height);
+		this.setRect(newx, this.height, this.width, this.height);
 		this.theta = Math.PI / 2;
 		this.dTheta = Math.PI / 30;
 	}
