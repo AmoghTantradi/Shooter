@@ -43,11 +43,11 @@ public class BossEnemy extends Enemy {
 			if (this.x <= 0) {
 				dx = 2;
 			}
-			for (int i = 0; i < Shooter.level % (heat.length + 1); i++) {
+			for (int i = 0; i < heat.length; i++) {
 				if (heat[i] == null) {
-					heat[i] = new HeatseekingMissile(
-							(int) (this.x + (this.width / (Shooter.level % (heat.length + 1))) * i),
+					heat[i] = new HeatseekingMissile((int) (this.x + (this.width * i / (heat.length - 1))),
 							(int) (this.y + this.height));
+					break;
 				}
 			}
 			for (int i = 0; i < heat.length; i++) {

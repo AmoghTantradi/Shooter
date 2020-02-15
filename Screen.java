@@ -13,6 +13,7 @@ public class Screen {
 	Mothership m;
 	Powerup p;
 	Powerup p2;
+	int temp;
 
 	public Screen() {
 		gplay = new Spaceship();
@@ -32,48 +33,52 @@ public class Screen {
 			Shooter.state = Shooter.Gamestate2;
 		}
 
-		if (Shooter.state == Shooter.Gamestate2 && !hasWon()) {
-			m.update();
-			gplay.update(m);
+		if (Shooter.state == Shooter.Gamestate2) {
+			if (!hasWon()) {
 
-			if (gplay.isDead()) {// health is only reset to normal after death or after it has won
+				m.update();
+				gplay.update(m);
 
-				restart();
-			}
+				if (gplay.isDead()) {// 1st case where game will refresh
 
-			for (int i = 0; i < m.theHive.length; i++) {
+					restart();// restarts if it is dead
+				} else {// only other case where GPLAY will have to restart: progression of levels
 
-				if (m.theHive[i] != null)
-					break;
-				if (m.theHive[i] == null && i == m.theHive.length - 1) {// if all the ships are destroyed, then restart
-																		// the thing(respawn the enemies)
+					for (int i = 0; i < m.theHive.length; i++) {
 
-					restart();
+						if (m.theHive[i] != null)
+							break;
+						if (m.theHive[i] == null && i == m.theHive.length - 1) {// if all the ships are destroyed, then
+																				// restart
+																				// the thing(respawn the enemies)
+
+							restart();
+						}
+					}
 				}
+				if (p != null)
+					p.update();
+				if (p2 != null)
+					p2.update();
+				if (p != null && p.outBounds())
+					p = null;
+				if (p2 != null && p2.outBounds())
+					p2 = null;
+
+			} else {
+
+				restart();// restarts if it has won
 			}
-			if (p != null)
-				p.update();
-			if (p2 != null)
-				p2.update();
-			if (p != null && p.outBounds())
-				p = null;
-			if (p2 != null && p2.outBounds())
-				p2 = null;
-
-		}
-		if (hasWon() && !gplay.isDead()) {
-
-			restart();
 		}
 
 		c.update(); // draws the stars no matter what
-		soundManager();
+		soundManager();// manages sound no matter what
 
 	}
 
 	public boolean hasWon() {
 		if (Shooter.endless == false)
-			return (Shooter.level == 2);
+			return (Shooter.level == 6);
 		else
 			return false;
 	}
@@ -88,7 +93,7 @@ public class Screen {
 			Shooter.s.stop(5);
 	}
 
-	public void restart() {
+	public void restart() {// restarts the game, checks edge cases, formats layout.
 		for (int i = 0; i < m.theHive.length; i++) {
 			m.theHive[i] = null;
 			m.d[i] = null;
@@ -100,7 +105,6 @@ public class Screen {
 		for (int i = 0; i < Shooter.sounds.length; i++) {
 			Shooter.s.stop(i);
 		}
-		Shooter.s.play(3);
 		if (Shooter.state == Shooter.Gamestate1)
 			gplay.moveShip(Shooter.width / 2 - gplay.getBounds().width / 2, (int) (Shooter.height * 0.65));
 		p = new HealthPack();
@@ -109,8 +113,9 @@ public class Screen {
 			if (!Shooter.endless)
 				Shooter.state = Shooter.Gamestate3;
 			else
-				Shooter.state = Shooter.Gamestate1;
-			Shooter.level = 0;
+				Shooter.state = Shooter.Gamestate5;
+			temp = Shooter.score;
+			Shooter.level = 1;
 			Shooter.score = 0;
 			Shooter.endless = false;
 			Screen.gplay.health.width = Screen.gplay.getBounds().width;
@@ -134,11 +139,14 @@ public class Screen {
 			win.setColor(Color.white);
 			win.drawString("Space Shooter", 60, 150);
 			win.setFont(font2);
-			win.drawString("Press arrow keys to move the ship and space bar to shoot", 85, 225);
-			win.drawString("Press Enter to Play!", Shooter.width / 2 - 200, 400);
+			win.drawString("Use arrow keys to move the ship and press space bar to shoot", 85, 225);
 			win.drawString("Press Backspace to fire Guided Missiles and use WASD to control them", 25,
-					(int) (Shooter.height * 0.8));
+					(int) (Shooter.height * 0.45));
 			c.draw(win);
+			win.setColor(Color.MAGENTA);
+			win.drawString("Press Enter to Play!", Shooter.width / 2 - 175, 500);
+			win.setColor(Color.GRAY);
+			win.drawString("By Amogh", (int) (Shooter.width * 0.75), (int) (Shooter.height * (0.85)));
 
 		} else if (Shooter.state == Shooter.Gamestate2) {
 			c.draw(win);
@@ -163,7 +171,7 @@ public class Screen {
 			win.setFont(font2);
 			win.drawString("Press Enter to play again", 60, (int) (Shooter.height * (0.75)));
 
-		} else {
+		} else if (Shooter.state == Shooter.Gamestate4) {
 			c.draw(win);
 			Font font = new Font("TimesNewRoman", Font.BOLD, 200);
 			Font font2 = new Font("TimesNewRoman", Font.BOLD, 35);
@@ -172,6 +180,14 @@ public class Screen {
 			win.setFont(font2);
 			win.drawString("Press Enter to play again", 60, (int) (Shooter.height * (0.75)));
 			win.drawString("Press E for Endless Mode", 60, (int) (Shooter.height * 0.85));
+		} else {
+			c.draw(win);
+			Font font = new Font("TimesNewRoman", Font.BOLD, 200);
+			Font font2 = new Font("TimesNewRoman", Font.BOLD, 35);
+			win.setFont(font);
+			win.drawString("" + temp, 50, 200);
+			win.setFont(font2);
+			win.drawString("Press Enter to play again", 60, (int) (Shooter.height * (0.75)));
 		}
 	}
 
