@@ -24,12 +24,12 @@ public class Shooter extends GDV5 {
 	public Shooter() {
 		super();
 		sounds = new String[6];
-		sounds[0] = "LaserSound.wav";
-		sounds[1] = "MissileSound.wav";
-		sounds[2] = "StartSound.wav";
-		sounds[3] = "BackgroundSound.wav";
-		sounds[4] = "ExplosionSound.wav";
-		sounds[5] = "StarWars.wav";
+		sounds[0] = "Sounds/LaserSound.wav";
+		sounds[1] = "Sounds/MissileSound.wav";
+		sounds[2] = "Sounds/StartSound.wav";
+		sounds[3] = "Sounds/BackgroundSound.wav";
+		sounds[4] = "Sounds/ExplosionSound.wav";
+		sounds[5] = "Sounds/StarWars.wav";
 		s = new SoundDriver(sounds, this);
 		screen = new Screen();
 
